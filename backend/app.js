@@ -1,16 +1,31 @@
 let express = require('express') //llamamos a Express
 let app = express()   
 var cors = require('cors')
+let {listarServicios, infoServicio, ejecutarServicio} = require('./service.js');
 //let {LineaHorarioSalidas, GetLineas} = require('./data.js') 
 //let {fiabilidadLinea, ParadaProxGuagua} = require('./analysis.js');             
 
-let port = process.env.PORT || 3000  // establecemos nuestro puerto
+let port = process.env.PORT || 3000  
 
 app.use(cors());
 
 app.get('/', (req, res) => {
     res.send('Backend en funcionamiento')
   })
+
+app.get('/servicios', (req, res) => {
+    res.send(listarServicios())
+})
+
+app.get('/servicio/:servicio/info', (req, res) => {
+    let servicio = req.params.servicio;
+    res.send(infoServicio(servicio))
+})
+
+app.get('/servicio/:servicio/ejecucion', (req, res) => {
+    let servicio = req.params.servicio;
+    res.send(ejecutarServicio(servicio))
+})
 
 /*app.get('/:parada', function(req, res) {
     let parada = req.params.parada;
