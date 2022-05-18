@@ -1,4 +1,4 @@
-# awesome-website
+# Frontend
 
 ## Project setup
 ```
