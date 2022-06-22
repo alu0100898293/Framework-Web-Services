@@ -1,60 +1,69 @@
-let express = require('express') //llamamos a Express
-let app = express()   
-var cors = require('cors')
-let {listarServicios, infoServicio, ejecutarServicio} = require('./service.js');
-//let {LineaHorarioSalidas, GetLineas} = require('./data.js') 
-//let {fiabilidadLinea, ParadaProxGuagua} = require('./analysis.js');             
+const express = require('express') //llamamos a Express
+const cors = require('cors')
+const bodyParser = require('body-parser')
+const multer = require('multer')
+const path = require('path')
 
-let port = process.env.PORT || 3000  
+let {listarServicios, 
+    infoServicio, 
+    ejecutarServicio, 
+    eliminarServicio,
+    nuevoServicio
+} = require('./service.js');   
+
+const app = express()   
+const port = 3000
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'servicios/temp/in')
+    },
+    filename: function(req, file, cb){
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+})
+const upload = multer({storage: storage})
 
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false}))
+app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
     res.send('Backend en funcionamiento')
   })
 
 app.get('/servicios', (req, res) => {
-    res.send(listarServicios())
+    console.log("Retornando nombres de servicios")
+    let info = listarServicios()
+    res.send(info)
 })
 
-app.get('/servicio/:servicio/info', (req, res) => {
+app.get('/info-servicio/:servicio', (req, res) => {
     let servicio = req.params.servicio;
+    console.log("Retornando datos del servicio " + servicio)
     res.send(infoServicio(servicio))
 })
 
-app.get('/servicio/:servicio/ejecucion', (req, res) => {
+app.get('/del-servicio/:servicio', (req, res) => {
     let servicio = req.params.servicio;
-    res.send(ejecutarServicio(servicio))
+    console.log("Eliminado el servicio " + servicio)
+    res.send(eliminarServicio(servicio))
 })
 
-/*app.get('/:parada', function(req, res) {
-    let parada = req.params.parada;
-    res.send(GetLineas(parada)); 
+app.post('/add-servicio', upload.single('file'), nuevoServicio)
+
+app.post('/exec-servicio', upload.array('files'), ejecutarServicio)
+
+app.get('/add-servicio', (req, res) => {
+    console.log("Añadiendo nuevo servicio ")
+    res.send('ok')
 })
 
-app.get('/horarios/:linea', function(req, res) {
-    let linea = req.params.linea;
-    res.send(LineaHorarioSalidas(linea)); 
+app.get('/exec-servicio/:servicio', (req, res) => {
+    let servicio = req.params.servicio;
+    console.log("Ejecutando el servicio " + servicio)
+    res.send(ejecutarServicio())
 })
-
-app.get('/tiemporestante/:parada', function(req, res) {
-    let parada = req.params.parada;
-    ParadaProxGuagua(parada)
-    .then(data => {
-        res.send(data.llegadas.llegada); 
-    })
-})
-
-app.get('/fiabilidad/:parada&:linea&:id_trayecto', function(req, res) {
-    let parada = req.params.parada;
-    let linea = req.params.linea;
-    let id_trayecto = req.params.id_trayecto;
-    fiabilidadLinea(linea, parada, id_trayecto)
-    .then(data => {
-        res.send(data); 
-    })
-})*/
 
 // iniciamos nuestro servidor
-app.listen(port)
-console.log('Escuchando en el puerto ' + port)
+app.listen(port, () => console.log(`Escuchando en el puerto ${port}`))

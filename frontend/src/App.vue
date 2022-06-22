@@ -1,75 +1,40 @@
 <template>
-  <div id="app">
-    <nav class="main-nav">
-      <div class="logo">my.company</div>
-      <Burger></Burger>
-    </nav>
-
-    <Sidebar>
-      <ul class="sidebar-panel-nav">
-        <li>
-          <a href="#home">Inicio</a>
-        </li>
-        <li>
-          <a href="#upload">Añadir servicio</a>
-        </li>
-        <li>
-          <a href="#execute">Ejecutar servicio</a>
-        </li>
-      </ul>
-    </Sidebar>
+  <Sidebar />
+  <div :style="{ 'margin-left': sidebarWidth }">
+    <router-view />
   </div>
 </template>
 
 <script>
-import Burger from "./components/Menu/Vue-Burger.vue";
-import Sidebar from "./components/Menu/Vue-Sidebar.vue";
+import Sidebar from '@/components/sidebar/Sidebar'
+import { sidebarWidth } from '@/components/sidebar/state'
 export default {
-  name: "app",
-  components: {
-    Burger,
-    Sidebar
+  components: { Sidebar },
+  setup() {
+    return { sidebarWidth }
   }
-};
+}
 </script>
+
 <style>
-html {
-  height: 100%;
-  overflow: hidden;
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
 }
-body {
-  border: 0;
-  margin: 0;
-  padding: 0;
-  font-family: "Lato";
-  height: 100%;
-  background: rgb(101, 31, 87);
-  background: linear-gradient(
-    45deg,
-    rgba(101, 31, 87, 1) 0%,
-    rgba(225, 113, 87, 1) 48%,
-    rgba(249, 248, 113, 1) 100%
-  );
+
+#nav {
+  padding: 30px;
 }
-.logo {
-  align-self: center;
-  color: #fff;
+
+#nav a {
   font-weight: bold;
-  font-family: "Lato";
+  color: #2c3e50;
 }
-.main-nav {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5rem 0.8rem;
-}
-ul.sidebar-panel-nav {
-  list-style-type: none;
-}
-ul.sidebar-panel-nav > li > a {
-  color: #fff;
-  text-decoration: none;
-  font-size: 1.5rem;
-  display: block;
-  padding-bottom: 0.5em;
+
+#nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>
