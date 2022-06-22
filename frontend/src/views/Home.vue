@@ -1,35 +1,23 @@
 <template>
   <div class="hello">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <h1>{{ msg }}</h1>
+    <h1>Bienvenido</h1>
     <p>
-      For a guide and recipes on how to configure / customize this project,
-      <br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">
-        vue-cli documentation
-      </a>
-      .
+      Para comenzar añada un servicio en la página correspondeinte y ejécutelo.
     </p>
-    <h3>Installed CLI Plugins</h3>
+    <h3>Requisitos</h3>
     <ul>
       <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          rel="noopener"
-        >
-          babel
-        </a>
+        Las entradas de ficheros al servicio deben realizarse desde el fichero ../temp/in,
+        mientras que las salidas deben alojarse en ../tmp/out
       </li>
       <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router"
-          target="_blank"
-          rel="noopener"
-        >
-          router
-        </a>
+        Las entradas al servicio se limitan a imágenes(.jpeg, .png), archivos de texto (.txt, .json),
+        y texto en terminal
+      </li>
+      <li>
+        Las salidas a mostrar son imágenes(.jpeg, .png), archivos de texto (.txt, .json),
+        y la salida estándar por terminal
       </li>
       <li>
         <a
@@ -104,7 +92,7 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'Home',
   props: {
     msg: String
   }
